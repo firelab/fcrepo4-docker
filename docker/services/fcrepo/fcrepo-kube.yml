@@ -1,0 +1,122 @@
+# Generation of Kubernetes YAML is still under development!
+#
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-2.2.1
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: "2021-01-26T19:07:02Z"
+  labels:
+    app: fcrepo
+  name: fcrepo
+spec:
+  containers:
+  - command:
+    - postgres
+    env:
+    - name: PATH
+      value: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/9.6/bin
+    - name: PGDATA
+      value: /var/lib/postgresql/data/pgdata
+    - name: POSTGRES_USER
+      value: fcrepoadmin
+    - name: POSTGRES_DB
+      value: fcrepo
+    - name: LANG
+      value: en_US.utf8
+    - name: PG_MAJOR
+      value: "9.6"
+    - name: PG_VERSION
+      value: 9.6.20-1.pgdg90+1
+    - name: POSTGRES_PASSWORD
+      value: fcrepoadminpw
+    - name: HOSTNAME
+      value: fcrepo
+    image: docker.io/library/postgres:9
+    name: fcrepo-postgres
+    ports:
+    - containerPort: 8080
+      hostPort: 8080
+      protocol: TCP
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: true
+      capabilities:
+        drop:
+        - CAP_MKNOD
+        - CAP_NET_RAW
+        - CAP_AUDIT_WRITE
+      privileged: false
+      readOnlyRootFilesystem: false
+      seLinuxOptions: {}
+    volumeMounts:
+    - mountPath: /var/lib/postgresql/data
+      name: home-bnordgren-Documents-hpiol-fcrepo_db
+    workingDir: /
+  - command:
+    - catalina.sh
+    - run
+    env:
+    - name: PATH
+      value: /usr/local/tomcat/bin:/usr/local/tomcat/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    - name: LANG
+      value: C.UTF-8
+    - name: CA_CERTIFICATES_JAVA_VERSION
+      value: 20170531+nmu1
+    - name: JAVA_VERSION
+      value: 8u181
+    - name: TOMCAT_MAJOR
+      value: "8"
+    - name: TOMCAT_ASC_URLS
+      value: "https://www.apache.org/dyn/closer.cgi?action=download&filename=tomcat/tomcat-8/v8.0.53/bin/apache-tomcat-8.0.53.tar.gz.asc \thttps://www-us.apache.org/dist/tomcat/tomcat-8/v8.0.53/bin/apache-tomcat-8.0.53.tar.gz.asc \thttps://www.apache.org/dist/tomcat/tomcat-8/v8.0.53/bin/apache-tomcat-8.0.53.tar.gz.asc \thttps://archive.apache.org/dist/tomcat/tomcat-8/v8.0.53/bin/apache-tomcat-8.0.53.tar.gz.asc"
+    - name: TOMCAT_TGZ_URLS
+      value: "https://www.apache.org/dyn/closer.cgi?action=download&filename=tomcat/tomcat-8/v8.0.53/bin/apache-tomcat-8.0.53.tar.gz \thttps://www-us.apache.org/dist/tomcat/tomcat-8/v8.0.53/bin/apache-tomcat-8.0.53.tar.gz \thttps://www.apache.org/dist/tomcat/tomcat-8/v8.0.53/bin/apache-tomcat-8.0.53.tar.gz \thttps://archive.apache.org/dist/tomcat/tomcat-8/v8.0.53/bin/apache-tomcat-8.0.53.tar.gz"
+    - name: TOMCAT_VERSION
+      value: 8.0.53
+    - name: TOMCAT_SHA512
+      value: cd8a4e48a629a2f2bb4ce6b101ebcce41da52b506064396ec1b2915c0b0d8d82123091242f2929a649bcd8b65ecf6cd1ab9c7d90ac0e261821097ab6fbe22df9
+    - name: LD_LIBRARY_PATH
+      value: /usr/local/tomcat/native-jni-lib
+    - name: JAVA_HOME
+      value: /docker-java-home/jre
+    - name: GPG_KEYS
+      value: 05AB33110949707C93A279E3D3EFE6B686867BA6 07E48665A34DCAFAE522E5E6266191C37C037D42 47309207D818FFD8DCD3F83F1931D684307A10A5 541FBE7D8F78B25E055DDEE13C370389288584E7 61B832AC2F1C5A90F0F9B00A1C506407564C17A3 713DA88BE50911535FE716F5208B0AB1D63011C7 79F7026C690BAA50B92CD8B66A3AD3F4F22C4FED 9BA44C2621385CB966EBA586F72C284D731FABEE A27677289986DB50844682F8ACB77FC2E86E29AC A9C5DF4D22E99998D9875A5110C01C5A2F6059E7 DCFD35E0BF8CA7344752DE8B6FB21E8933C60243 F3A04C595DB5B6A5F1ECA43E3B7BBB100D811BBE F7DA48BB64BCB84ECBA7EE6935CD23C10D498E23
+    - name: OPENSSL_VERSION
+      value: 1.1.0f-3+deb9u2
+    - name: CATALINA_HOME
+      value: /usr/local/tomcat
+    - name: JAVA_DEBIAN_VERSION
+      value: 8u181-b13-1~deb9u1
+    - name: TOMCAT_NATIVE_LIBDIR
+      value: /usr/local/tomcat/native-jni-lib
+    - name: HOSTNAME
+      value: fcrepo
+    image: localhost/fcrepo:v1
+    name: fcrepo-tomcat
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: true
+      capabilities:
+        drop:
+        - CAP_MKNOD
+        - CAP_NET_RAW
+        - CAP_AUDIT_WRITE
+      privileged: false
+      readOnlyRootFilesystem: false
+      seLinuxOptions: {}
+    workingDir: /usr/local/tomcat
+  restartPolicy: Never
+  volumes:
+  - hostPath:
+      path: /home/bnordgren/Documents/hpiol/fcrepo_db
+      type: Directory
+    name: home-bnordgren-Documents-hpiol-fcrepo_db
+status: {}
+---
+metadata:
+  creationTimestamp: null
+spec: {}
+status:
+  loadBalancer: {}
